@@ -40,6 +40,8 @@ spec:
   ports:
     - port: 443
       targetPort: 8443
+  externalIPs:
+    - 192.168.137.67
   selector:
     k8s-app: kubernetes-dashboard
 

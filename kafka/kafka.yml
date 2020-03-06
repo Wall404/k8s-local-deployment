@@ -46,6 +46,8 @@ spec:
           ports:
             - containerPort: 9092
               protocol: TCP
+          externalIPs:
+            - 192.168.137.67
           env:
             - name: HOSTNAME_COMMAND
               value: "echo $(hostname).kafka-headless.kafka-ns.svc.cluster.local"
