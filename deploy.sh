@@ -6,7 +6,7 @@ check () {
     fi
 }
 
-docker system prune -y
+docker system prune -f
 
 # echo -e "\e[34mCreating Data API docker image\e[39m"
 # docker build -t flask-api:test flask-API/
