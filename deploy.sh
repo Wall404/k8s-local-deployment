@@ -57,7 +57,7 @@ check $?
 
 # deploy API
 echo -e "\e[34mDeploy Data API'\e[39m"
-kubectl apply -f flask-API/app/api-deployment.yaml
+kubectl apply -f data-api/api-deployment.yaml
 
 echo -e "\e[34mDeploying Kafka cluster\e[39m"
 kubectl create -f kafka/kafka.yml
