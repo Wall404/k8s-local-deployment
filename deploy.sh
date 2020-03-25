@@ -40,40 +40,40 @@ kubectl apply -f https://download.elastic.co/downloads/eck/1.0.1/all-in-one.yaml
 echo -e "\e[34mApply nginx\e[39m"
 kubectl apply -f nginx/nginx.yml
 
-echo -e "\e[34mDeploying Flink operator\e[39m"
-kubectl create -f https://raw.githubusercontent.com/lyft/flinkk8soperator/v0.4.0/deploy/crd.yaml
-check $?
-kubectl create -f https://raw.githubusercontent.com/lyft/flinkk8soperator/v0.4.0/deploy/namespace.yaml
-check $?
-kubectl create -f https://raw.githubusercontent.com/lyft/flinkk8soperator/v0.4.0/deploy/role.yaml
-check $?
-kubectl create -f https://raw.githubusercontent.com/lyft/flinkk8soperator/v0.4.0/deploy/role-binding.yaml
-check $?
-kubectl create -f flink/config.yml
-check $?
-# kubectl create -f https://raw.githubusercontent.com/lyft/flinkk8soperator/v0.3.0/deploy/flinkk8soperator.yaml
-kubectl create -f flink/flinkk8soperator.yaml
-check $?
+# echo -e "\e[34mDeploying Flink operator\e[39m"
+# kubectl create -f https://raw.githubusercontent.com/lyft/flinkk8soperator/v0.4.0/deploy/crd.yaml
+# check $?
+# kubectl create -f https://raw.githubusercontent.com/lyft/flinkk8soperator/v0.4.0/deploy/namespace.yaml
+# check $?
+# kubectl create -f https://raw.githubusercontent.com/lyft/flinkk8soperator/v0.4.0/deploy/role.yaml
+# check $?
+# kubectl create -f https://raw.githubusercontent.com/lyft/flinkk8soperator/v0.4.0/deploy/role-binding.yaml
+# check $?
+# kubectl create -f flink/config.yml
+# check $?
+# # kubectl create -f https://raw.githubusercontent.com/lyft/flinkk8soperator/v0.3.0/deploy/flinkk8soperator.yaml
+# kubectl create -f flink/flinkk8soperator.yaml
+# check $?
 
 # deploy API
 echo -e "\e[34mDeploy Data API'\e[39m"
 kubectl apply -f data-api/api-deployment.yaml
 
-echo -e "\e[34mDeploying Kafka cluster\e[39m"
-kubectl create -f kafka/kafka.yml
-check $?
+# echo -e "\e[34mDeploying Kafka cluster\e[39m"
+# kubectl create -f kafka/kafka.yml
+# check $?
 
-echo -e "\e[34mWaiting for Zookeeper pod #0\e[39m"
-kubectl wait --for=condition=ready pods/zookeeper-0 -n kafka-ns --timeout=120s
-check $?
-echo -e "\e[34mWaiting for Kafka pod #0\e[39m"
-kubectl wait --for=condition=ready pods/kafka-0 -n kafka-ns --timeout=120s
-check $?
+# echo -e "\e[34mWaiting for Zookeeper pod #0\e[39m"
+# kubectl wait --for=condition=ready pods/zookeeper-0 -n kafka-ns --timeout=120s
+# check $?
+# echo -e "\e[34mWaiting for Kafka pod #0\e[39m"
+# kubectl wait --for=condition=ready pods/kafka-0 -n kafka-ns --timeout=120s
+# check $?
 
-echo -e "\e[34mSending some messages to topic 'test'\e[39m"
-kubectl exec -ti kafka-0 -n kafka-ns -- kafka-console-producer.sh --broker-list kafka-0.kafka-headless.kafka-ns.svc.cluster.local:9092 --topic test < kafka/test.txt
-echo -e "\e[34mReading some messages to topic 'test'\e[39m"
-kubectl exec kafka-0 -n kafka-ns -- kafka-console-consumer.sh --bootstrap-server kafka-0.kafka-headless.kafka-ns.svc.cluster.local:9092 --topic test --from-beginning --timeout-ms 5000
+# echo -e "\e[34mSending some messages to topic 'test'\e[39m"
+# kubectl exec -ti kafka-0 -n kafka-ns -- kafka-console-producer.sh --broker-list kafka-0.kafka-headless.kafka-ns.svc.cluster.local:9092 --topic test < kafka/test.txt
+# echo -e "\e[34mReading some messages to topic 'test'\e[39m"
+# kubectl exec kafka-0 -n kafka-ns -- kafka-console-consumer.sh --bootstrap-server kafka-0.kafka-headless.kafka-ns.svc.cluster.local:9092 --topic test --from-beginning --timeout-ms 5000
 
 # deploy example
 # echo -e "\e[34mDeploying Flink word count example\e[39m"
