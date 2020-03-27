@@ -16,6 +16,13 @@ kind delete cluster
 kind create cluster --config kind.yml
 check $?
 
+kubectl apply -f https://projectcontour.io/quickstart/contour.yaml
+kubectl patch daemonsets -n projectcontour envoy -p '{"spec":{"template":{"spec":{"nodeSelector":{"ingress-ready":"true"},"tolerations":[{"key":"node-role.kubernetes.io/master","operator":"Equal","effect":"NoSchedule"}]}}}}'
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/mandatory.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/provider/baremetal/service-nodeport.yaml
+kubectl patch deployments -n ingress-nginx nginx-ingress-controller -p '{"spec":{"template":{"spec":{"containers":[{"name":"nginx-ingress-controller","ports":[{"containerPort":80,"hostPort":80},{"containerPort":443,"hostPort":443}]}],"nodeSelector":{"ingress-ready":"true"},"tolerations":[{"key":"node-role.kubernetes.io/master","operator":"Equal","effect":"NoSchedule"}]}}}}'
+
+
 # echo "load image"
 # kind load docker-image flask-api:test
 
@@ -38,7 +45,7 @@ echo -e "\e[34mApply elasticsearch pod\e[39m"
 kubectl apply -f https://download.elastic.co/downloads/eck/1.0.1/all-in-one.yaml
 
 echo -e "\e[34mApply nginx\e[39m"
-kubectl apply -f nginx/nginx.yml
+# kubectl apply -f nginx/nginx-ing-controller.yml
 
 # echo -e "\e[34mDeploying Flink operator\e[39m"
 # kubectl create -f https://raw.githubusercontent.com/lyft/flinkk8soperator/v0.4.0/deploy/crd.yaml
