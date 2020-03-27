@@ -15,14 +15,18 @@ spec:
   containers:
   - name: data-api
     image: wall404/flask-api:latest
+    imagePullPolicy: IfNotPresent
     # args:
     #   - "-text=data-api"
     resources:
+      requests:
+        memory: "64Mi"
+        cpu: "250m"
       limits:
         memory: "128Mi"
         cpu: "500m"
-    # ports:
-    #   - containerPort: <Port>
+    ports:
+      - containerPort: 80
 
 # apiVersion: apps/v1
 # metadata:
@@ -68,8 +72,8 @@ spec:
   selector:
     app: data-api
   ports:
-  - port: 5000
-      # targetPort: 5000
+  - port: 80
+    # targetPort: 5000
   # externalIPs:
   #   - 192.168.137.67
 ---
@@ -91,4 +95,4 @@ spec:
       - path: /data-api
         backend:
           serviceName: data-api-svc
-          servicePort: 5000
+          servicePort: 80
